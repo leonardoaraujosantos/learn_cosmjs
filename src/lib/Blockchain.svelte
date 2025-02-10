@@ -1,8 +1,9 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import { StargateClient } from "@cosmjs/stargate";
-    import { writable } from "svelte/store";
-    import { walletAddress, stargateClient, isConnectedLeapWallet } from "../stores/blockchainStore";
+    import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
+    import { get } from "svelte/store";
+    import { walletAddress, stargateClientInstance, isConnectedLeapWallet, signingClient } from "../stores/blockchainStore";
   
     let isOpen = false;
     let isConnectedLeapWalletResult = false;
@@ -37,10 +38,11 @@
                 alert("Please install the LeapWallet extension.");
                 return;
             }
-  
+            console.log('chainId: ', chainId)
             if (!chainId) {
+                console.log('LETS GO!!!!')
                 const client = await StargateClient.connect(rpcEndpoint);
-                stargateClient.set(client);
+                stargateClientInstance.set(client);
                 chainId = await client.getChainId();
             }
   
@@ -50,6 +52,12 @@
             walletAddress.set(walletAddressResult);
             isConnectedLeapWalletResult = true;
             isConnectedLeapWallet.set(isConnectedLeapWalletResult)
+            const signClient = await SigningCosmWasmClient.connectWithSigner(
+                    rpcEndpoint,
+                    window.leap.getOfflineSigner("aminichain")
+                );
+                console.log('SigningCosmWasmClient: ', signClient)
+                signingClient.set(signClient);
   
             console.log("Connected to LeapWallet:", walletAddress);
   
@@ -69,6 +77,7 @@
   
             await window.leap.disconnect(chainId);
             walletAddress.set(null);
+            stargateClientInstance.set(null);
             isConnectedLeapWalletResult = false;
             isConnectedLeapWallet.set(isConnectedLeapWalletResult)
             balance = "Not Connected";
@@ -83,6 +92,7 @@
             const client = await StargateClient.connect(rpcEndpoint);
             chainId = await client.getChainId();
             console.log("CosmJS Stargate Connected @", chainId);
+            stargateClientInstance.set(client);
         } catch (error) {
             console.error("Error connecting to Stargate:", error);
         }
@@ -184,7 +194,7 @@
         {#if isConnectedLeapWalletResult}
             <div class="wallet-info">
                 <p>🔗 Address:</p>
-                <p>{walletAddress}</p>
+                <p>{get(walletAddress)}</p>
             </div>
             <div class="wallet-info">
                 <p>💰 Balance:</p>

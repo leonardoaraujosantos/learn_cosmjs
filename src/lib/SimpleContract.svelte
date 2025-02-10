@@ -1,7 +1,7 @@
 <script lang="ts">
     import { get } from "svelte/store";
     import { CosmWasmClient } from "@cosmjs/cosmwasm-stargate";
-    import { walletAddress, stargateClient } from "../stores/blockchainStore";
+    import { walletAddress, signingClient } from "../stores/blockchainStore";
 
     const contractAddress = "cosmos14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9s4hmalr";
     let count: string = "Loading...";
@@ -26,7 +26,12 @@
     }
 
     async function incrementCount() {
-        if (!get(stargateClient) || !get(walletAddress)) {
+        const client = get(signingClient); // Obtém o cliente do store
+        const sender = get(walletAddress); // Obtém o endereço da carteira
+
+        console.log('Client: ', client)
+        console.log('Sender: ', sender)
+        if (!client || !sender) {
             count = "Connect to LeapWallet first.";
             return;
         }
@@ -38,7 +43,7 @@
         };
 
         try {
-            const result = await get(stargateClient).execute(get(walletAddress), contractAddress, execMsg, fee);
+            const result = await client.execute(sender, contractAddress, execMsg, fee);
             count = `Incremented! TxHash: ${result.transactionHash}`;
         } catch (error) {
             console.error("Error incrementing:", error);
