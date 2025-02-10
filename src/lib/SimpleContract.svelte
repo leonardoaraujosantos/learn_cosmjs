@@ -1,0 +1,89 @@
+<script lang="ts">
+    import { get } from "svelte/store";
+    import { CosmWasmClient } from "@cosmjs/cosmwasm-stargate";
+    import { walletAddress, stargateClient } from "../stores/blockchainStore";
+
+    const contractAddress = "cosmos14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9s4hmalr";
+    let count: string = "Loading...";
+    let message: string = "No message yet.";
+
+    async function queryCount() {
+        const queryClient = await CosmWasmClient.connect("http://127.0.0.1:26657");
+
+        const queryMsg = { get_count: {} };
+        const response = await queryClient.queryContractSmart(contractAddress, queryMsg);
+        count = `Counter: ${response.count}`;
+    }
+
+    async function queryMessage() {
+        const queryClient = await CosmWasmClient.connect("http://127.0.0.1:26657");
+
+        const queryMsg = { get_message: { name: "leo!" } };
+        const response = await queryClient.queryContractSmart(contractAddress, queryMsg);
+        console.log('Result query get_message', response);
+        message = `Message: ${response.message}`;
+    }
+
+    async function incrementCount() {
+        if (!get(stargateClient) || !get(walletAddress)) {
+            count = "Connect to LeapWallet first.";
+            return;
+        }
+
+        const execMsg = { increment: {} };
+        const fee = {
+            amount: [{ denom: "stake", amount: "5000" }],
+            gas: "200000",
+        };
+
+        try {
+            const result = await get(stargateClient).execute(get(walletAddress), contractAddress, execMsg, fee);
+            count = `Incremented! TxHash: ${result.transactionHash}`;
+        } catch (error) {
+            console.error("Error incrementing:", error);
+            count = "Error incrementing.";
+        }
+    }
+</script>
+
+<style>
+  .contract-container {
+      padding: 20px;
+      background: #1a1a2e;
+      color: white;
+      border-radius: 10px;
+      text-align: center;
+      max-width: 400px;
+      margin: auto;
+  }
+
+  .contract-button {
+      margin-top: 10px;
+      padding: 10px;
+      background: #a855f7;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      color: white;
+  }
+
+  .contract-output {
+      margin-top: 15px;
+      background: #27272a;
+      padding: 10px;
+      border-radius: 5px;
+  }
+</style>
+
+<div class="contract-container">
+    <h2>Simple Contract</h2>
+
+    <button class="contract-button" on:click={queryCount}>Get Count</button>
+    <button class="contract-button" on:click={queryMessage}>Get Message</button>
+    <button class="contract-button" on:click={incrementCount}>Increment</button>
+
+    <div class="contract-output">
+        <p>{count}</p>
+        <p>{message}</p>
+    </div>
+</div>

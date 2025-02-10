@@ -3,6 +3,7 @@
   import viteLogo from '/vite.svg'
   import Counter from './lib/Counter.svelte'
   import CosmJsConnection from './lib/Blockchain.svelte';
+  import SimpleContract from './lib/SimpleContract.svelte';
 </script>
 
 <main>
@@ -19,6 +20,7 @@
   <div class="card">
     <Counter />
     <CosmJsConnection/>
+    <SimpleContract/>
   </div>
 
   <p>

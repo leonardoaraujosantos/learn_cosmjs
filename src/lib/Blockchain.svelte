@@ -1,10 +1,11 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import { StargateClient } from "@cosmjs/stargate";
+    import { writable } from "svelte/store";
+    import { walletAddress, stargateClient, isConnectedLeapWallet } from "../stores/blockchainStore";
   
     let isOpen = false;
-    let isConnectedLeapWallet = false;
-    let walletAddress: string | null = null;
+    let isConnectedLeapWalletResult = false;
     let chainId: string | null = null;
     let balance: string = "Loading...";
     const rpcEndpoint = 'http://127.0.0.1:26657';
@@ -39,18 +40,21 @@
   
             if (!chainId) {
                 const client = await StargateClient.connect(rpcEndpoint);
+                stargateClient.set(client);
                 chainId = await client.getChainId();
             }
   
             await window.leap.enable(chainId);
             const publicKey = await window.leap.getKey(chainId);
-            walletAddress = publicKey.bech32Address;
-            isConnectedLeapWallet = true;
+            const walletAddressResult = publicKey.bech32Address;
+            walletAddress.set(walletAddressResult);
+            isConnectedLeapWalletResult = true;
+            isConnectedLeapWallet.set(isConnectedLeapWalletResult)
   
             console.log("Connected to LeapWallet:", walletAddress);
   
             // Buscar saldo após a conexão
-            await fetchBalance(walletAddress);
+            await fetchBalance(walletAddressResult);
         } catch (error) {
             console.error("Error connecting to LeapWallet:", error);
         }
@@ -64,8 +68,9 @@
             }
   
             await window.leap.disconnect(chainId);
-            walletAddress = null;
-            isConnectedLeapWallet = false;
+            walletAddress.set(null);
+            isConnectedLeapWalletResult = false;
+            isConnectedLeapWallet.set(isConnectedLeapWalletResult)
             balance = "Not Connected";
             console.log("Disconnected from LeapWallet.");
         } catch (error) {
@@ -165,7 +170,7 @@
   
   <!-- Botão "Connect" fixo no topo direito -->
   <button class="connect-btn" on:click={togglePanel}>
-    {isConnectedLeapWallet ? "Wallet Connected" : "Connect"}
+    {isConnectedLeapWalletResult ? "Wallet Connected" : "Connect"}
   </button>
   
   <!-- Menu suspenso abaixo do botão -->
@@ -176,7 +181,7 @@
             <button class="close-btn" on:click={togglePanel}>✖</button>
         </div>
   
-        {#if isConnectedLeapWallet}
+        {#if isConnectedLeapWalletResult}
             <div class="wallet-info">
                 <p>🔗 Address:</p>
                 <p>{walletAddress}</p>
