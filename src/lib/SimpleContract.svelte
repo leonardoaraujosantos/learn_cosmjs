@@ -6,6 +6,7 @@
     const contractAddress = "cosmos14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9s4hmalr";
     let count: string = "Loading...";
     let message: string = "No message yet.";
+    let nameInput: string = "leo!"; // Valor inicial do input
 
     async function queryCount() {
         const queryClient = await CosmWasmClient.connect("http://127.0.0.1:26657");
@@ -18,9 +19,9 @@
     async function queryMessage() {
         const queryClient = await CosmWasmClient.connect("http://127.0.0.1:26657");
 
-        const queryMsg = { get_message: { name: "leo!" } };
+        const queryMsg = { get_message: { name: nameInput } }; // Usa o valor do input
         const response = await queryClient.queryContractSmart(contractAddress, queryMsg);
-        console.log('Result query get_message', response);
+        console.log("Result query get_message", response);
         message = `Message: ${response.message}`;
     }
 
@@ -67,6 +68,16 @@
       color: white;
   }
 
+  .contract-input {
+      margin-top: 10px;
+      padding: 8px;
+      border: none;
+      border-radius: 5px;
+      width: 80%;
+      text-align: center;
+      font-size: 16px;
+  }
+
   .contract-output {
       margin-top: 15px;
       background: #27272a;
@@ -77,6 +88,9 @@
 
 <div class="contract-container">
     <h2>Simple Contract</h2>
+
+    <!-- Caixa de texto para entrada do nome -->
+    <input class="contract-input" type="text" bind:value={nameInput} placeholder="Enter name" />
 
     <button class="contract-button" on:click={queryCount}>Get Count</button>
     <button class="contract-button" on:click={queryMessage}>Get Message</button>

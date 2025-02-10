@@ -1,7 +1,6 @@
 <script lang="ts">
   import svelteLogo from './assets/svelte.svg'
   import viteLogo from '/vite.svg'
-  import Counter from './lib/Counter.svelte'
   import CosmJsConnection from './lib/Blockchain.svelte';
   import SimpleContract from './lib/SimpleContract.svelte';
 </script>
@@ -18,7 +17,6 @@
   <h1>Vite + Svelte</h1>
 
   <div class="card">
-    <Counter />
     <CosmJsConnection/>
     <SimpleContract/>
   </div>
