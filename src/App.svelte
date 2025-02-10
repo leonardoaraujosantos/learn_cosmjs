@@ -1,19 +1,10 @@
 <script lang="ts">
-  import svelteLogo from './assets/svelte.svg'
-  import viteLogo from '/vite.svg'
+  import niceBackground from './assets/nice_background.svg'
   import CosmJsConnection from './lib/Blockchain.svelte';
   import SimpleContract from './lib/SimpleContract.svelte';
 </script>
 
 <main>
-  <div>
-    <a href="https://vite.dev" target="_blank" rel="noreferrer">
-      <img src={viteLogo} class="logo" alt="Vite Logo" />
-    </a>
-    <a href="https://svelte.dev" target="_blank" rel="noreferrer">
-      <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
-    </a>
-  </div>
   <h1>CosmJS + Svelte (CosmWasm)</h1>
 
   <div class="card">
@@ -31,6 +22,15 @@
 </main>
 
 <style>
+  :global(body) {
+    margin: 0;
+    background-image: url(./assets/nice_background.svg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+  }
+  
   .logo {
     height: 6em;
     padding: 1.5em;
