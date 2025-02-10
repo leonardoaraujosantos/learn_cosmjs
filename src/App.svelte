@@ -5,7 +5,7 @@
 </script>
 
 <main>
-  <h1>CosmJS + Svelte (CosmWasm)</h1>
+  <h1>ComputeEngine++</h1>
 
   <div class="card">
     <CosmJsConnection/>
