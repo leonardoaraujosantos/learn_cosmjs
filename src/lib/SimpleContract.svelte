@@ -1,26 +1,34 @@
 <script lang="ts">
+    import { onMount } from 'svelte';
     import { get } from "svelte/store";
     import { CosmWasmClient } from "@cosmjs/cosmwasm-stargate";
-    import { walletAddress, signingClient } from "../stores/blockchainStore";
+    import { walletAddress, signingClient, rpcAddress } from "../stores/blockchainStore";
 
     const contractAddress = "cosmos14hj2tavq8fpesdwxxcu44rty3hh90vhujrvcmstl4zr3txmfvw9s4hmalr";
     let count: string = "Loading...";
     let message: string = "No message yet.";
     let nameInput: string = "leo!"; // Valor inicial do input
+    let cosmWasmClient: any;
 
+    onMount(async () => {
+        try {
+            cosmWasmClient = await CosmWasmClient.connect(get(rpcAddress));
+        } catch (error) {
+            console.error("Error connecting to CosmWasmClient:", error);
+        }
+    });
+    
     async function queryCount() {
-        const queryClient = await CosmWasmClient.connect("http://127.0.0.1:26657");
-
         const queryMsg = { get_count: {} };
-        const response = await queryClient.queryContractSmart(contractAddress, queryMsg);
+        const response = await cosmWasmClient.queryContractSmart(
+            contractAddress, queryMsg);
         count = `Counter: ${response.count}`;
     }
 
     async function queryMessage() {
-        const queryClient = await CosmWasmClient.connect("http://127.0.0.1:26657");
-
-        const queryMsg = { get_message: { name: nameInput } }; // Usa o valor do input
-        const response = await queryClient.queryContractSmart(contractAddress, queryMsg);
+        const queryMsg = { get_message: { name: nameInput } };
+        const response = await cosmWasmClient.queryContractSmart(
+            contractAddress, queryMsg);
         console.log("Result query get_message", response);
         message = `Message: ${response.message}`;
     }
@@ -43,7 +51,9 @@
         };
 
         try {
-            const result = await client.execute(sender, contractAddress, execMsg, fee);
+            const result = await client.execute(
+                sender, contractAddress, 
+                execMsg, fee);
             count = `Incremented! TxHash: ${result.transactionHash}`;
         } catch (error) {
             console.error("Error incrementing:", error);

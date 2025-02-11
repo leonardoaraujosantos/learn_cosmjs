@@ -5,6 +5,7 @@ import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
 export const isConnectedLeapWallet = writable(false);
 export const walletAddress = writable<string | null>(null);
 export const balance = writable("Loading...");
+export const rpcAddress = writable("http://127.0.0.1:26657");
 export const stargateClientInstance = writable<StargateClient | null>(null);
 export const chainId = writable<string | null>(null);
 export const signingClient = writable<SigningCosmWasmClient | null>(null);
