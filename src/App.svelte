@@ -2,6 +2,7 @@
   import niceBackground from './assets/nice_background.svg'
   import CosmJsConnection from './lib/Blockchain.svelte';
   import SimpleContract from './lib/SimpleContract.svelte';
+    import UploadIpfs from './lib/UploadIPFS.svelte';
     import WasmCompiler from './lib/WasmCompiler.svelte';
 </script>
 
@@ -12,6 +13,7 @@
     <CosmJsConnection/>
     <SimpleContract/>
     <WasmCompiler/>
+    <UploadIpfs/>
   </div>
 
   <p>
