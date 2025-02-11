@@ -17,7 +17,7 @@
   </div>
 
   <p>
-    Check out <a href="https://github.com/sveltejs/kit#readme" target="_blank" rel="noreferrer">SvelteKit</a>, the official Svelte app framework powered by Vite!
+    Simple Dapp with <a href="https://svelte.dev" target="_blank" rel="noreferrer">Svelte</a>, and <a href="https://tutorials.cosmos.network/tutorials/7-cosmjs/1-cosmjs-intro.html" target="_blank" rel="noreferrer">CosmJs</a>!
   </p>
 
 </main>
@@ -30,21 +30,5 @@
     background-position: center;
     background-repeat: no-repeat;
     min-height: 100vh;
-  }
-  
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
-  }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-  }
-  .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00aa);
-  }
-  .read-the-docs {
-    color: #888;
   }
 </style>
