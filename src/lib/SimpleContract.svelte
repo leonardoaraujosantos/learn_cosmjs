@@ -93,12 +93,21 @@
       font-size: 16px;
   }
 
-  .contract-output {
-      margin-top: 15px;
-      background: #27272a;
-      padding: 10px;
-      border-radius: 5px;
-  }
+  /* Caixa de saída melhorada */
+.contract-output {
+    margin-top: 15px;
+    background: #27272a;
+    padding: 12px;
+    border-radius: 5px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+    text-align: left;
+    font-size: 14px;
+    max-width: 100%;
+    border: 1px solid #a855f7;
+    box-shadow: 0px 4px 10px rgba(168, 85, 247, 0.2);
+}
 </style>
 
 <div class="contract-container">
