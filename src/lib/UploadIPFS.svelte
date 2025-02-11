@@ -57,11 +57,11 @@
           cid = data.IpfsHash;
         } else {
           error = data['error']['reason'] || "Erro no upload para o IPFS.";
-          console.log('Failed to upload(response):', data)
+          console.log('Failed to upload(response):', data);
         }
       } catch (err) {
         error = "Erro ao fazer o upload: " + err;
-        console.log('Failed to upload(catch):', err)
+        console.log('Failed to upload(catch):', err);
       } finally {
         isUploading = false;
       }
@@ -69,6 +69,13 @@
   
     function triggerFileInput() {
       document.getElementById("fileInput")?.click();
+    }
+  
+    function handleKeyPress(event: KeyboardEvent) {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        triggerFileInput();
+      }
     }
   
     function handleFileChange(event: Event) {
@@ -84,13 +91,17 @@
   <div class="upload-container">
     <h2>Upload para o IPFS (Pinata)</h2>
   
-    <!-- Área de Drag & Drop -->
+    <!-- Área de Drag & Drop (Corrigida para acessibilidade) -->
     <div 
       class="dropzone {isDragging ? 'dragging' : ''}" 
+      role="button"
+      tabindex="0"
+      aria-label="Área para arrastar e soltar arquivos"
       on:dragover={handleDragOver} 
       on:dragleave={handleDragLeave} 
       on:drop={handleDrop}
       on:click={triggerFileInput}
+      on:keydown={handleKeyPress}
     >
       {#if file}
         <p>Arquivo selecionado: <strong>{file.name}</strong></p>
@@ -137,10 +148,16 @@
       margin-bottom: 15px;
       cursor: pointer;
       transition: background-color 0.3s ease;
+      outline: none;
+    }
+  
+    .dropzone:focus, .dropzone:hover {
+      background-color: #f5f5f5;
+      border-color: #888;
     }
   
     .dropzone.dragging {
-      background-color: #f0f0f0;
+      background-color: #e0e0e0;
     }
   
     button {
