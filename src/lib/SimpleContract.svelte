@@ -34,12 +34,12 @@
     }
 
     async function incrementCount() {
-        const client = get(signingClient); // Obtém o cliente do store
-        const sender = get(walletAddress); // Obtém o endereço da carteira
+        const signedClient = get(signingClient); // Obtém o cliente do store
+        const senderWallet = get(walletAddress); // Obtém o endereço da carteira
 
-        console.log('Client: ', client)
-        console.log('Sender: ', sender)
-        if (!client || !sender) {
+        console.log('Client: ', signedClient)
+        console.log('Sender: ', senderWallet)
+        if (!signedClient || !senderWallet) {
             count = "Connect to LeapWallet first.";
             return;
         }
@@ -51,8 +51,8 @@
         };
 
         try {
-            const result = await client.execute(
-                sender, contractAddress, 
+            const result = await signedClient.execute(
+                senderWallet, contractAddress, 
                 execMsg, fee);
             count = `Incremented! TxHash: ${result.transactionHash}`;
         } catch (error) {
