@@ -16,6 +16,8 @@
     let wasmBytes: Uint8Array | null = null;
     let wabtInstance: any = null; // Sem definições de tipo disponíveis, usamos 'any'
     let isError: boolean = false;
+    // Variável para armazenar o nome da função exportada
+    let exportedFunctionName: string | null = null;
   
     onMount(async () => {
       try {
@@ -54,14 +56,22 @@
         wasmModule = await WebAssembly.compile(wasmBytes);
         const instance = await WebAssembly.instantiate(wasmModule);
   
-        // Faz o _cast_ da exportação "add" para o tipo correto
-        const add = instance.exports.add as ((a: number, b: number) => number) | undefined;
-        if (typeof add !== "function") {
-          throw new Error("Exported function 'add' is not available or not a function.");
+        // Identifica os nomes dos exports do módulo
+        const exportNames = Object.keys(instance.exports);
+        if (exportNames.length === 0) {
+          throw new Error("No exports found in the compiled WASM.");
         }
-        const result = add(5, 3);
+        // Assume que o primeiro export é a função desejada
+        exportedFunctionName = exportNames[0];
   
-        output = `Compilation successful! Test: add(5, 3) = ${result}`;
+        // Faz o _cast_ da exportação para o tipo correto
+        const exportedFunction = instance.exports[exportedFunctionName] as ((a: number, b: number) => number) | undefined;
+        if (typeof exportedFunction !== "function") {
+          throw new Error(`Exported member '${exportedFunctionName}' is not a function.`);
+        }
+        const result = exportedFunction(5, 3);
+  
+        output = `Compilation successful! Test: ${exportedFunctionName}(5, 3) = ${result}`;
         isError = false;
   
         // Libera recursos do módulo WAT
@@ -81,8 +91,9 @@
         const blob = new Blob([wasmBytes], { type: "application/wasm" });
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
+        // Utiliza o nome da função exportada para o arquivo, ou "program" se não estiver definido
+        a.download = `${exportedFunctionName || "program"}.wasm`;
         a.href = url;
-        a.download = "program.wasm";
         a.click();
         URL.revokeObjectURL(url);
       }
