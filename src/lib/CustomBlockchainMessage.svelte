@@ -1,9 +1,9 @@
 <script lang="ts">
   import { get } from "svelte/store";
-  import { OfflineSigner, SigningStargateClient } from "@cosmjs/stargate";
+  import { SigningStargateClient } from "@cosmjs/stargate";
   import { Registry } from "@cosmjs/proto-signing";
   import { MsgOraclePushResult } from "../types/aminichain/apigateway/tx";
-  import { walletAddress, signingClient, rpcAddress, offlineSigner } from "../stores/blockchainStore";
+  import { walletAddress, rpcAddress, offlineSigner } from "../stores/blockchainStore";
   import { fade, fly } from 'svelte/transition';
 
   const registry = new Registry();
@@ -21,18 +21,23 @@
     success = false;
     
     try {
-      if (!get(rpcAddress) || !get(offlineSigner)) {
+      const blockchainAddr = get(rpcAddress)
+      const walletOfflineSigner = get(offlineSigner)
+      const msgWalletAddr = get(walletAddress)
+      if (!blockchainAddr || !walletOfflineSigner || !msgWalletAddr) {
           statusMessage = "Connect to LeapWallet first.";
           loading = false;
           return;
       }
 
+      // Get a client signing interface
       const client = await SigningStargateClient.connectWithSigner(
-        get(rpcAddress), 
-        get(offlineSigner), 
+        blockchainAddr, 
+        walletOfflineSigner, 
         { registry }
       );
       
+      // Our Message Content
       const msg = {
         creator: get(walletAddress),
         jobId: jobId,
@@ -45,17 +50,18 @@
       };
 
       const result = await client.signAndBroadcast(
-        get(walletAddress), 
+        msgWalletAddr, 
         [{
           typeUrl: "/aminichain.apigateway.MsgOraclePushResult",
           value: msg,
         }], 
         fee, 
-        "Push Oracle Result"
+        "Push Oracle Result" //Memo
       );
 
       if (result.code !== undefined && result.code !== 0) {
-        statusMessage = `Transaction failed: ${result.log || result.rawLog}`;
+        console.log('result: ', result)
+        statusMessage = `Transaction failed: ${result.rawLog}`;
         success = false;
       } else {
         statusMessage = `Transaction sent successfully. TxHash: ${result.transactionHash}`;
