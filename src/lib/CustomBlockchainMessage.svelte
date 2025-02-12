@@ -21,6 +21,11 @@
       loading = true;
       statusMessage = "Sending transaction...";
       try {
+        if (!get(rpcAddress) || !get(offlineSigner)) {
+            statusMessage = "Connect to LeapWallet first.";
+            loading = false;
+            return;
+        }
         const client = await SigningStargateClient.connectWithSigner(
           get(rpcAddress), get(offlineSigner), 
           { registry });
