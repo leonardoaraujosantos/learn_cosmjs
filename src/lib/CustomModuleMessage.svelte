@@ -37,7 +37,7 @@
         { registry }
       );
       
-      // Our Message Content
+      // Populate Our Message Content
       const msg = {
         creator: get(walletAddress),
         jobId: jobId,
@@ -49,6 +49,7 @@
         gas: "200000",
       };
 
+      // Ask Wallet Sign Approval
       const result = await client.signAndBroadcast(
         msgWalletAddr, 
         [{

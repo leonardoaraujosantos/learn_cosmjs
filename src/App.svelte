@@ -4,7 +4,8 @@
   import SimpleContract from './lib/SimpleContract.svelte';
   import UploadIpfs from './lib/UploadIPFS.svelte';
   import WasmCompiler from './lib/WasmCompiler.svelte';
-  import CustomMessage from './lib/CustomBlockchainMessage.svelte';
+  import CustomModuleMessage from './lib/CustomModuleMessage.svelte';
+  import CustomModuleQuery from './lib/CustomModuleQuery.svelte';
 </script>
 
 <main>
@@ -12,7 +13,8 @@
 
   <div class="card">
     <CosmJsConnection/>
-    <CustomMessage />
+    <CustomModuleMessage />
+    <CustomModuleQuery/>
     <SimpleContract/>
     <WasmCompiler/>
     <UploadIpfs/>
