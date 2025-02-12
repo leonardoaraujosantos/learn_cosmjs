@@ -1,0 +1,18 @@
+syntax = "proto3";
+package aminichain.apigateway;
+
+option go_package = "aminichain/x/apigateway/types";
+
+message JobTask {
+  
+  uint64 id = 1; 
+  string webHookUrl = 2; 
+  string InputJson = 3; 
+  bool done = 4; 
+  int64 startBlockHeight = 5;
+  int64 finishedBlockHeight = 6;
+  uint64 computeTaskId = 7;
+  string Creator = 8;
+  string Result = 9;
+  string Executor = 10;
+}

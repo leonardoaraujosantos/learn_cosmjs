@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package aminichain.apigateway;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "aminichain/apigateway/params.proto";
+import "aminichain/apigateway/compute_task.proto";
+import "aminichain/apigateway/job_task.proto";
+
+option go_package = "aminichain/x/apigateway/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  
+  // Parameters queries the parameters of the module.
+  rpc Params (QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/aminichain/apigateway/params";
+  
+  }
+  
+  // Queries a specific JobStatus items.
+  rpc JobStatus (QueryJobStatusRequest) returns (QueryJobStatusResponse) {
+    option (google.api.http).get = "/aminichain/apigateway/job_status/{jobTaskId}";
+  
+  }
+  
+  // Queries a list of ComputeTask items.
+  rpc ComputeTask (QueryComputeTaskRequest) returns (QueryComputeTaskResponse) {
+    option (google.api.http).get = "/aminichain/apigateway/compute_task";
+  
+  }
+}
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message QueryJobStatusRequest {
+  uint64 jobTaskId = 1;
+}
+
+message QueryJobStatusResponse {
+  JobTask jobTask = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryComputeTaskRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryComputeTaskResponse {
+  repeated ComputeTask                                 ComputeTask     = 1 [(gogoproto.nullable) = false];
+           cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+

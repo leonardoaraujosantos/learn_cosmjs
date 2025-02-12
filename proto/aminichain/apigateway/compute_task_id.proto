@@ -1,0 +1,9 @@
+syntax = "proto3";
+package aminichain.apigateway;
+
+option go_package = "aminichain/x/apigateway/types";
+
+message ComputeTaskId {
+  uint64 valor = 1; 
+  
+}

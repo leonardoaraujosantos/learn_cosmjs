@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package aminichain.apigateway;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "aminichain/apigateway/params.proto";
+import "aminichain/apigateway/compute_task_id.proto";
+import "aminichain/apigateway/job_task_id.proto";
+
+option go_package = "aminichain/x/apigateway/types";
+
+// GenesisState defines the apigateway module's genesis state.
+message GenesisState {
+  
+  // params defines all the parameters of the module.
+  Params        params        = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+  ComputeTaskId computeTaskId = 2;
+  JobTaskId     jobTaskId     = 3;
+}
+
