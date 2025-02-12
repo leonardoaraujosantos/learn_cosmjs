@@ -40,4 +40,4 @@ for file in "${WORKSPACE}"/proto/aminichain/apigateway/*.proto; do
         "$file"
 done
 
-echo "✅ Compilação dos arquivos proto concluída. Verifique ./src/types/generated para os arquivos gerados."
+echo "✅ Compilação dos arquivos proto concluída(Local). Verifique ./src/types/generated para os arquivos gerados."
