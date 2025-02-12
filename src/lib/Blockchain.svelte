@@ -3,7 +3,8 @@
     import { StargateClient } from "@cosmjs/stargate";
     import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate";
     import { get } from "svelte/store";
-    import { walletAddress, stargateClientInstance, chainId, rpcAddress,
+    import { walletAddress, stargateClientInstance, 
+        chainId, rpcAddress, offlineSigner,
         isConnectedLeapWallet, signingClient } from "../stores/blockchainStore";
   
     let isOpen = false;
@@ -50,11 +51,15 @@
             walletAddress.set(walletAddressResult);
             isConnectedLeapWalletResult = true;
             isConnectedLeapWallet.set(isConnectedLeapWalletResult)
+            // Get the OfflineSigner
+            const offlineSignerConst = window.leap.getOfflineSigner(currentChainId);
+            console.log("OfflineSigner: ", offlineSigner);
+            offlineSigner.set(offlineSignerConst); 
             // Offline signer interface allows signing transaction without
             // sharing the private key
             const signClient = await SigningCosmWasmClient.connectWithSigner(
                     get(rpcAddress),
-                    window.leap.getOfflineSigner("aminichain")
+                    offlineSignerConst
                 );
                 console.log('SigningCosmWasmClient: ', signClient)
                 signingClient.set(signClient);

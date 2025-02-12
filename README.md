@@ -19,3 +19,6 @@ npm run dev
 * https://www.youtube.com/watch?v=YUsjneQptDQ
 * https://protobuf.dev
 * https://github.com/stephenh/ts-proto
+* https://ida.interchain.io/hands-on-exercise/3-cosmjs-adv/2-cosmjs-messages.html
+* https://tutorials.cosmos.network/tutorials/7-cosmjs/5-create-custom.html
+* https://www.mechanicalrock.io/blog/getting-started-with-protobufs-and-typescript
