@@ -6,12 +6,14 @@
   import WasmCompiler from './lib/WasmCompiler.svelte';
   import CustomModuleMessage from './lib/CustomModuleMessage.svelte';
   import CustomModuleQuery from './lib/CustomModuleQuery.svelte';
+  import BlockchainEvents from './lib/BlockchainEvents.svelte';
 </script>
 
 <main>
   <h1>ComputeEngine++</h1>
 
   <div class="card">
+    <BlockchainEvents/>
     <CosmJsConnection/>
     <CustomModuleMessage />
     <CustomModuleQuery/>

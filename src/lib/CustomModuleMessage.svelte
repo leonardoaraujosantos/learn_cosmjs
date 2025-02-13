@@ -2,7 +2,7 @@
   import { get } from "svelte/store";
   import { SigningStargateClient } from "@cosmjs/stargate";
   import { Registry } from "@cosmjs/proto-signing";
-  import { MsgOraclePushResult } from "../types/aminichain/apigateway/tx";
+  import { MsgOraclePushResult } from "../types/generated/aminichain/apigateway/tx";
   import { walletAddress, rpcAddress, offlineSigner } from "../stores/blockchainStore";
   import { fade, fly } from 'svelte/transition';
 
