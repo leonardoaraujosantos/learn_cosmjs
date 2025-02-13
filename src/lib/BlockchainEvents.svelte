@@ -1,18 +1,17 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import { Tendermint37Client } from "@cosmjs/tendermint-rpc";
+    import { get } from "svelte/store";
+    import { webSocketAddress } from "../stores/blockchainStore";
 
     let blockHeight: string = "Waiting for new blocks...";
     let transactionEvent: string = "Waiting for transactions...";
     let tmClient: Tendermint37Client;
 
-    const rpcWebSocketEndpoint = "ws://127.0.0.1:26657";
-
     async function connectWebSocket() {
         try {
-            tmClient = await Tendermint37Client.connect(rpcWebSocketEndpoint);
+            tmClient = await Tendermint37Client.connect(get(webSocketAddress));
             console.log("Connected to WebSocket RPC");
-
             const blockStream = tmClient.subscribeNewBlock();
             blockStream.addListener({
                 next: (block) => {
@@ -25,7 +24,6 @@
                 },
                 complete: () => console.log("Stream completed")
             });
-
             const txStream = tmClient.subscribeTx("tm.event = 'Tx'");
             txStream.addListener({
                 next: (tx) => {
@@ -38,7 +36,6 @@
                 },
                 complete: () => console.log("Transaction stream completed")
             });
-
         } catch (error) {
             console.error("Error connecting to WebSocket RPC:", error);
             blockHeight = "Error connecting to WebSocket RPC.";
