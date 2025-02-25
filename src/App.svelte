@@ -7,6 +7,7 @@
   import CustomModuleMessage from './lib/CustomModuleMessage.svelte';
   import CustomModuleQuery from './lib/CustomModuleQuery.svelte';
   import BlockchainEvents from './lib/BlockchainEvents.svelte';
+  import RegisterComputeTask from './lib/RegisterComputeTask.svelte';
 </script>
 
 <main>
@@ -15,6 +16,7 @@
   <div class="card">
     <BlockchainEvents/>
     <CosmJsConnection/>
+    <RegisterComputeTask/>
     <CustomModuleMessage />
     <CustomModuleQuery/>
     <SimpleContract/>
