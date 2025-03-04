@@ -45,7 +45,7 @@
       
       try {
         const response = await fetch(
-          `${restEndpoint}/aminichain/apigateway/compute_task_list`,
+          `${restEndpoint}/aminichain/apigateway/compute_task_list?id=-1`,
           {
             headers: {
               "accept": "application/json"
