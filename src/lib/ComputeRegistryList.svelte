@@ -45,7 +45,7 @@
       
       try {
         const response = await fetch(
-          `${restEndpoint}/aminichain/apigateway/compute_task`,
+          `${restEndpoint}/aminichain/apigateway/compute_task_list`,
           {
             headers: {
               "accept": "application/json"
@@ -283,9 +283,9 @@
                 </td>
                 <td>
                   {#if task.computeType === "0"}
-                    <span class="badge ml">Machine Learning</span>
+                    <span class="badge ml">🤖🧠</span>
                   {:else if task.computeType === "1"}
-                    <span class="badge wasm">Web Assembly</span>
+                    <span class="badge wasm">Wasm</span>
                   {:else}
                     <span class="badge unknown">{getComputeTypeLabel(task.computeType)}</span>
                   {/if}
