@@ -9,6 +9,7 @@
   import BlockchainEvents from './lib/BlockchainEvents.svelte';
   import RegisterComputeTask from './lib/RegisterComputeTask.svelte';
   import ScheduleJob from './lib/ScheduleJob.svelte';
+  import JobTaskList from './lib/JobTaskList.svelte';
 </script>
 
 <main>
@@ -19,6 +20,7 @@
     <CosmJsConnection/>
     <RegisterComputeTask/>
     <ScheduleJob/>
+    <JobTaskList/>
     <CustomModuleMessage />
     <CustomModuleQuery/>
     <SimpleContract/>
