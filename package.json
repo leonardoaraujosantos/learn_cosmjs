@@ -12,16 +12,23 @@
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^5.0.3",
     "@tsconfig/svelte": "^5.0.4",
+    "buffer": "^6.0.3",
+    "process": "^0.11.10",
     "svelte": "^5.15.0",
     "svelte-check": "^4.1.1",
     "typescript": "~5.6.2",
-    "vite": "^6.0.5"
+    "vite": "^6.0.5",
+    "vite-plugin-node-polyfills": "^0.23.0"
   },
   "dependencies": {
     "@cosmjs/cosmwasm-stargate": "^0.33.0",
     "@cosmjs/proto-signing": "^0.33.0",
     "@cosmjs/stargate": "^0.33.0",
     "@leapwallet/cosmos-snap-provider": "^0.1.26",
+    "@web3auth/auth-adapter": "^9.7.0",
+    "@web3auth/base": "^9.7.0",
+    "@web3auth/modal": "^9.7.0",
+    "@web3auth/no-modal": "^9.7.0",
     "protobufjs": "^7.4.0",
     "wabt": "^1.0.36"
   }
