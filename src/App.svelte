@@ -1,6 +1,6 @@
 <script lang="ts">
   import niceBackground from './assets/nice_background.svg'
-  import CosmJsConnection from './lib/Blockchain.svelte';
+  import CosmJsConnection from './lib/LeapWalletConnect.svelte';
   import Web3AuthConnection from './lib/Web3AuthConnect.svelte';
   import SimpleContract from './lib/SimpleContract.svelte';
   import UploadIpfs from './lib/UploadIPFS.svelte';

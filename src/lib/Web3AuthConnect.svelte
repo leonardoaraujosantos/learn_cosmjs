@@ -1,7 +1,8 @@
 <script lang="ts">
     import { onMount } from 'svelte';
     import { get } from "svelte/store";
-    import { walletAddress, chainId, cosmosRPCWeb3AuthProvider,
+    import { walletAddress, chainId, 
+        cosmosRPCWeb3AuthProvider, offlineSigner,
         isConnectedLeapWallet } from "../stores/blockchainStore";
     
     import { Web3Auth } from "@web3auth/modal";
@@ -69,6 +70,7 @@
                 cosmosRPCWeb3AuthProvider.set(cosmosRPC)
                 isConnectedLeapWalletResult = true;
                 isConnectedLeapWallet.set(isConnectedLeapWalletResult)
+                offlineSigner.set(await cosmosRPC.getOfflineSigner())
                 // Ask Wallet Balance
                 await fetchBalance();
             }
